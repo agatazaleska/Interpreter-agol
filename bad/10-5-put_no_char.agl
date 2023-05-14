@@ -1,0 +1,2 @@
+string a = "example";
+a.put(0, "XX");

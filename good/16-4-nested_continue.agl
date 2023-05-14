@@ -1,0 +1,13 @@
+int x = 5;
+
+while (x > 0) {
+    int y = 0;
+    while (y < x) {
+        y = y + 1;
+        if (y != 2) {
+            continue;
+        }
+        print ("y is 2! And x is ", x, ".");
+    }
+    x = x - 1;
+}

@@ -1,0 +1,8 @@
+int x = 5;
+int y = 7;
+while (y - x > 0) {
+    print("at loop begin y - x = ", y - x);
+    int x = -100;
+    y = y-1;
+    print("at loop end y - x = ", y - x);
+}

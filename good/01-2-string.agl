@@ -1,0 +1,9 @@
+string empty = "";
+string s = "Ala " ;
+
+s.put(0, "E") ;
+s = s + "ma kota" ;
+
+string first_l = s.get(0) ;
+print("First letter is ", first_l) ;
+print("String is ", s) ;

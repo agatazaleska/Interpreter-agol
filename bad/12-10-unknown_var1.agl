@@ -1,0 +1,9 @@
+fun example () : int {
+    x = x + 1;
+    print("fun");
+    return 0;
+}
+
+int x = 10;
+example();
+

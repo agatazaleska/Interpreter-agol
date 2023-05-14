@@ -1,0 +1,21 @@
+fun silnia(int n) : int {
+    if (n < 2) {
+        return 1 ;
+    }
+    else {
+        return n * silnia(n-1) ; 
+    }
+}
+
+fun fib(int n) : int {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+int result = silnia(5) ;
+print ("silnia(5) = ", result) ;
+
+int fib_result = fib(10) ;
+print ("fib(10) = ", fib_result) ;

@@ -1,0 +1,21 @@
+string a = "" ;
+while (a != "agata") {
+    int l = 0;
+    while(true) {
+        if (l == 0 || l== 2 || l== 4) {
+            a = a + "a";
+        }
+        if (l == 1) {
+            a = a + "g";
+        }
+        if (l == 3) {
+            a = a + "t";
+        }
+        if (l >= 5) {
+            break;
+        }
+        l = l + 1;
+    }
+}
+
+print("a is ", a, "!");

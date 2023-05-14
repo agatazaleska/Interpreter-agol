@@ -1,0 +1,23 @@
+int x = 500;
+
+fun main(): int {
+
+  fun globalVariable(): int {
+    x = x + 1;
+    print("Hello from globalVariable function, x is equal: ", x);
+    return 0;
+  }
+
+  fun localVariable(): int {
+    int x = 10;
+    globalVariable();
+    print("Hello from localVariable function, x is equal: ", x);
+    return 0;
+  }
+
+  localVariable();
+  print("Hello from main function, x is equal: ", x);
+  return 0;
+}
+
+main();

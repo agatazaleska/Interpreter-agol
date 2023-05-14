@@ -1,0 +1,11 @@
+fun a () : int {
+    fun b () : boolean {
+        fun c () : string {
+            return "a";
+        }
+        c();
+        return true;
+    }
+    c();
+    return 0;
+}

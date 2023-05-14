@@ -1,0 +1,12 @@
+print ("lala printing a string") ;
+print (5) ;
+print (true) ;
+print ("print multiple ", "arguments ", 6) ;
+print ([1, 2, 3, 4, 5]) ;
+
+string a = "ABC" ;
+int b = 10 ;
+boolean c = false ;
+list<int> d = [1, 2, 3] ;
+
+print ("print string: ", a,  ", then int: ", b, ", then bool: ", c, ", then list: ", d) ;

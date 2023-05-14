@@ -1,0 +1,27 @@
+int a, b, c;
+boolean d, e, f;
+string g, h, j;
+
+a = 2/3;
+print("a = ", a); // a = 0
+
+b = 1;
+c = (((a + 1) * 5) % 3) / 1;
+print("c = ", c); // c = 2
+
+d = a == b;
+print("d = ", d); // d = false
+
+e = ((a > b) && (b > c)) || (a > c);
+print("e = ", e); // e = false
+
+f = a != b;
+print("f = ", f); // f = true
+
+g = "Ala";
+h = "Ela";
+j = g + h;
+print("j = ", j); // j = "AlaEla"
+
+print(g == h); // false
+

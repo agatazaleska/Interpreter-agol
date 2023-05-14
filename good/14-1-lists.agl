@@ -1,0 +1,9 @@
+list<int> my_list = [1, 2, 3] ;
+int el = my_list.get(0) ;
+print(el) ;
+
+my_list.put(0, 0) ;
+print(my_list) ;
+
+my_list.append(100) ;
+print(my_list) ;

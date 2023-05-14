@@ -1,0 +1,6 @@
+int a = 0;
+int b = 0;
+if (a == b) {
+    int c = 10;
+}
+print(c);

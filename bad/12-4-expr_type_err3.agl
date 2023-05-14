@@ -1,0 +1,4 @@
+string a = "aaaa";
+string aa = "aa";
+
+string sub = a - aa;

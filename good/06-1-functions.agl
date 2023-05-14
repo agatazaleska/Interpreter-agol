@@ -1,0 +1,15 @@
+fun a(int x) : int {
+    print (x) ;
+    return 0 ;
+}
+
+int var = 15 ;
+a(15) ;
+
+fun b(list<int> y) : string {
+    print (y) ;
+    return "success" ;
+}
+
+list<int> my_list = [1, 2, 3] ;
+b (my_list) ;

@@ -1,0 +1,7 @@
+int a1, a2, a3 ;
+boolean b1, b2, b3 ;
+string c1, c2, c3 ;
+
+a1 = 3 ;
+b1 = true ;
+c1 = "string" ;

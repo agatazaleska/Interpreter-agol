@@ -1,0 +1,4 @@
+fun example (int a, int b) : string {
+    int c = a + b;
+    return c ;
+}

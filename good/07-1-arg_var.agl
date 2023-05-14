@@ -1,0 +1,21 @@
+fun f (int a, string b, boolean c) : boolean {
+    a = a + 1000;
+    print ("Hello from function f, a = ", a);
+
+    b = b + " i myszke";
+    print ("Hello from function f, b = ", b);
+
+    c = !c;
+    print ("Hello from function f, c = ", c);
+
+    return c;
+}
+
+int a = 0;
+string b = "Ala ma kota";
+boolean c = true;
+
+f(a, b, c);
+print("Hello from outside world, a = ", a);
+print("Hello from outside world, b = ", b);
+print("Hello from outside world, c = ", c);

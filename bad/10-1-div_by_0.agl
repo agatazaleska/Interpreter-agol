@@ -1,0 +1,2 @@
+int x = 4, y = 4, z = 6 ;
+int divide_by_zero = z / (x - y) ;

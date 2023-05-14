@@ -1,0 +1,3 @@
+int a;
+boolean b;
+int c = a + b;

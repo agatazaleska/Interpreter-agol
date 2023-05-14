@@ -1,0 +1,8 @@
+fun a () : int {
+    fun b () : boolean {
+        return true;
+    }
+    return 0;
+}
+
+boolean var = b();

@@ -1,0 +1,7 @@
+int a = 0, b = 4;
+if (a == 0) {
+    print(a);
+}
+else {
+    continue;
+}

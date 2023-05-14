@@ -1,0 +1,6 @@
+fun example (int a, int b) : boolean {
+    int c = a + b ;
+    if (c == 5) {
+        c = 0 ;
+    }
+}

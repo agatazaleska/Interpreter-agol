@@ -1,0 +1,13 @@
+int x = 5;
+
+fun my_fun () : string {
+    if (x == 5) {
+        return "x = 5";
+    }
+    else {
+        return "x != 5";
+    }
+}
+
+int x = 10 ;
+print (my_fun());

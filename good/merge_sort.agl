@@ -1,0 +1,59 @@
+list<int> pom = [];
+list<int> tab = [];
+
+fun sortowanie_przez_scalanie(list<int> tab, int lewy, int prawy): int {
+
+	fun scal(list<int> tab, int lewy, int srodek, int prawy): int {
+        int i = lewy, j = srodek + 1;
+
+        int k = lewy;
+        while (k <= prawy) {
+            pom.put(k, tab.get(k));
+            k = k + 1;
+        }
+
+        int l = lewy;
+        while (i <= srodek || j <= prawy) {
+            if (i <= srodek) {
+                if (j <= prawy) {
+                    if (pom.get(j) < pom.get(i)) {
+                        tab.put(l, pom.get(j));
+                        j = j + 1;
+                    } else {
+                        tab.put(l, pom.get(i));
+                        i = i + 1;
+                    }
+                } else {
+                    tab.put(l, pom.get(i));
+                    i = i + 1;
+                }
+            } else {
+                tab.put(l, pom.get(j));
+                j = j + 1;
+            }
+            l = l + 1;
+        }
+    	return 0;  
+    }
+
+	if(prawy <= lewy) {
+		return 0; 
+    }
+	int srodek = (prawy + lewy) / 2;
+	
+	sortowanie_przez_scalanie(& tab, lewy, srodek);
+	sortowanie_przez_scalanie(& tab, srodek + 1, prawy);
+	
+	scal(& tab, lewy, srodek, prawy);
+	return 0;
+}
+
+int n = 12;
+tab = [7, 12, 2, 24, 5, 12, 13, 3, 56, 3, 1, 19];
+pom = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+print("before merge sort: ", tab) ;
+sortowanie_przez_scalanie(& tab, 0, n - 1);
+
+int i = 0;
+print("after merge sort: ", tab) ;

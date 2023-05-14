@@ -1,0 +1,11 @@
+int x = 10;
+int y = 1;
+
+while (y < x) {
+    if (y == 3) {
+        break;
+    }
+    y = y + 1;
+}
+
+print ("y = ", y);

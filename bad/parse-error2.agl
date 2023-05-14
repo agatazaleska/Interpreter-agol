@@ -1,0 +1,4 @@
+fun wrong (int a, boolean b) {
+    print("no return type specified") ;
+    print(a, b) ;
+}

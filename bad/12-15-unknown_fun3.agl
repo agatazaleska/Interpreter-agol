@@ -1,0 +1,17 @@
+fun a () : int {
+    return 0;
+}
+
+fun b () : int {
+    int ret = a();
+    return ret;
+}
+
+fun c () : int {
+    int ret = d();
+    return ret;
+}
+
+fun d () : int {
+    return 0;
+}

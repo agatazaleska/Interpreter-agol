@@ -1,0 +1,6 @@
+fun a (int x, int y) : int {
+    if (x + y == 0) {
+        break;
+    }
+    return 0;
+}

@@ -1,0 +1,43 @@
+fun f1 (int a) : string {
+    if (a < 0) {
+        return "NEGATIVE";
+    }
+    if (a == 0) {
+        return "ZERO";
+    }
+    return "POSITIVE";
+}
+
+fun f2 (boolean b) : int {
+    if (b) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+fun f3 (string c, int len) : list<int> {
+    list<int> result = [];
+    int i = 0;
+    while (i < len) {
+        string ch = c.get(i);
+        if (ch == "a") {
+            result.append(1);
+        }
+        else {
+            result.append(0);
+        }
+        i = i + 1;
+    }
+    return result;
+}
+
+fun f4 (list<boolean> d) : boolean {
+    return d.get(0);
+}
+
+print("f1 result is ", f1(-5));
+print("f2 result is ", f2(true));
+print("f3 result is ", f3("abbabab", 7));
+print("f4 result is ", f4([true, true, false]));

@@ -1,0 +1,9 @@
+fun no_ret (int x) : boolean {
+    if (x > 10) {
+        return true ;
+    }
+    print ("no return in this case") ;
+}
+
+int a = 10 ;
+boolean fun_result = no_ret(a) ;

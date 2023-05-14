@@ -1,0 +1,10 @@
+fun example(int a, string b) : int {
+    if (a == 0) {
+        print (b) ;
+    }
+    return a + 1;
+}
+
+int x = 10 ;
+boolean y = true ;
+example(x, y) ;
