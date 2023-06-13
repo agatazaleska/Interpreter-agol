@@ -9,12 +9,12 @@ import System.Process (CreateProcess(env))
 import Data.Text.Array (new, empty)
 import TypeChecker.TypesAndUtils
 
-checkArg :: Arg -> Expr -> Env -> TypeCheckM Env
-checkArg (ArgR _ typ ident) expr fun_env = do
+checkArg :: Arg -> Expr -> TypeCheckM Env
+checkArg (ArgR _ typ ident) expr = do
     env <- ask
     case expr of
         ERef _ ref_ident -> do
-            case varType ref_ident (envVar fun_env) of
+            case varType ref_ident (envVar env) of
                 Just vtype -> do
                     let arg_type = getVType typ
                     if arg_type /= vtype then
@@ -28,13 +28,13 @@ checkArg (ArgR _ typ ident) expr fun_env = do
                 throwError ("Mismached argument type at " ++ showPos (exprPos expr))
             else return env
 
-checkArgs :: [Arg] -> [Expr] -> Env -> BNFC'Position -> TypeCheckM Env
-checkArgs (arg : args) (expr : exprs) env pos = do
-    checkArg arg expr env
-    checkArgs args exprs env pos
+checkArgs :: [Arg] -> [Expr] -> BNFC'Position -> TypeCheckM Env
+checkArgs (arg : args) (expr : exprs) pos = do
+    checkArg arg expr
+    checkArgs args exprs pos
 
-checkArgs [] [] env pos = ask
-checkArgs _ _  env pos = throwError ("Mismached number of arguments at " ++ showPos pos)
+checkArgs [] [] pos = ask
+checkArgs _ _ pos = throwError ("Mismached number of arguments at " ++ showPos pos)
 
 addArg :: Arg -> Env -> TypeCheckM Env
 addArg (ArgR _ typ ident) env = do
@@ -205,7 +205,7 @@ checkExpr (EApp pos ident exprs) = do
     case my_fun of
         Nothing -> throwError ("Attempted use of undeclared function at " ++ showPos pos)
         Just fun -> do
-            local (const env) (checkArgs (funArgs fun) exprs (funEnv fun) pos)
+            local (const env) (checkArgs (funArgs fun) exprs pos)
             return $ retType fun
 
 checkStmt :: Stmt -> TypeCheckM Env
@@ -273,7 +273,7 @@ checkStmt (While pos expr block) = do
 checkStmt (FnDef pos ident args fun_type block) = do
     env <- ask
     let new_flags = (envFlags env) { inFunc = True, funcType = getVType fun_type, ret = False }
-    let new_fun = Fun { funArgs = args, retType = getVType fun_type, funEnv = env}
+    let new_fun = Fun { funArgs = args, retType = getVType fun_type }
     let new_env = env { envFun = insert ident new_fun (envFun env) }
     let new_flags_env = new_env { envFlags = new_flags }
 

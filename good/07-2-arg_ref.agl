@@ -1,18 +1,23 @@
-list<int> a = [1, 2, 3, 4] ;
-string b = "s did not change" ;
-
 fun change_str(string s) : int {
     s = "s changed" ;
     return 0 ;
 }
 
 fun change_list(list<int> tab): int {
-    a.append(5);
-    a.put(0, 0);
+    tab.append(5);
+    tab.put(0, 0);
     return 0 ;
 }
 
-change_str(& b) ;
-change_list(& a) ;
-print(a) ;
-print(b) ;
+fun wew() : int {
+  list<int> a = [1, 2, 3, 4] ;
+  string b = "s did not change" ;
+
+  change_str(& b) ; 
+  change_list(& a) ;
+  print(a) ;
+  print(b) ;
+  return 0 ;
+}
+
+wew();

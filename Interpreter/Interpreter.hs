@@ -14,7 +14,7 @@ addArg :: Arg -> Expr -> Env -> ExecM Env
 addArg (ArgR _ typ ident) expr fun_env = do
     case expr of
         ERef _ ref_ident -> do
-            loc <- local (const fun_env) (getVarLoc ref_ident)
+            loc <- getVarLoc ref_ident
             let new_env = fun_env { envVar =
                 insert ident loc (envVar fun_env) }
             return new_env
@@ -165,7 +165,7 @@ evalExpr (EApp pos ident exprs) = do
         Nothing -> throwError "Unexpected failure! Function not found!"
         Just fun -> do
             let (my_args, my_env) = (funArgs fun, funEnv fun)
-            new_env <- local (const env)  (addArgs my_args exprs my_env)
+            new_env <- addArgs my_args exprs my_env
             (new_env, value) <- local (const new_env) (execBlock (funBlock fun))
             if value == VNone then
                 throwError ("No function return value! Error at: " ++ showPos pos)

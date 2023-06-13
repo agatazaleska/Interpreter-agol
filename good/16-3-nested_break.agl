@@ -16,6 +16,7 @@ while (a != "agata") {
         }
         l = l + 1;
     }
+    print("hello");
 }
 
 print("a is ", a, "!");

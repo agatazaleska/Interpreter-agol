@@ -15,7 +15,7 @@ data ValType = TInt | TString | TBool | TList ValType | TNone
 
 data Flags = Flags { inFunc :: Bool, funcType :: ValType, ret :: Bool, inLoop :: Bool }
 data Env = Env { envVar :: EnvVar, envFun :: EnvFun, envFlags :: Flags }
-data Fun = Fun { funArgs :: [Arg], retType :: ValType, funEnv :: Env }
+data Fun = Fun { funArgs :: [Arg], retType :: ValType }
 
 type TypeCheckM a = ExceptT String (Reader Env) a
 

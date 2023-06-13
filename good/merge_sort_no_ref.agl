@@ -53,7 +53,7 @@ tab = [7, 12, 2, 24, 5, 12, 13, 3, 56, 3, 1, 19];
 pom = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 print("before merge sort: ", tab) ;
-sortowanie_przez_scalanie(&tab, 0, n - 1);
+sortowanie_przez_scalanie(tab, 0, n - 1);
 
 int i = 0;
 print("after merge sort: ", tab) ;
