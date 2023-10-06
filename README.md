@@ -1,43 +1,53 @@
-### Agata Załęska - opis rozwiązania zadania zaliczeniowego - Interpreter
+### Agata Załęska - description of the Task - Interpreter
 
-#### Opis języka 
+#### Language Description 
 
-Język, który wybrałam do zadania zaliczeniowego Interpreter jest raczej standardowy, nie ma w nim wymyślnych elementów składniowych ani trudnych koncepcyjnie funkcjonalności. Lekko inspirowałam się językiem Latte, jednak mój język różni się od niego kilkoma rozszerzeniami oraz składnią. Język jest statycznie typowany.
+The language I chose for the this task is quite standard, without fancy syntax elements or conceptually challenging features.
+I drew some inspiration from the Latte language, but Agol differs from it in several extensions and syntax.
+The language is statically typed.
 
-###### Struktura programu
+###### Program Structure
 
-Program jest ciągiem instrukcji oddzielonych średnikami. Instrukcje to między innymi ``while, if, else, break, continue, return``,  a także przypisania, deklaracje zmiennych i funkcji, wywołanie funkcji zadeklarowanych oraz wywołanie dodatkowych funkcji wbudowanych w język.
+A program consists of a sequence of statements separated by semicolons.
+Statements include "while," "if," "else," "break," "continue," "return," as well as assignments,
+variable and function declarations, function calls, and calls to built-in functions in the language.
 
-###### Typy 
+###### Types 
 
-Dostępne są standardowe typy:  `int, bool, string`, oraz listy prostego typu (bez zagnieżdżania).
+The available standard types are `int`, `bool`, `string`, and simple non-nested lists.
 
-###### Arytmetyka
+###### Arithmetic
 
-Zmienne typu int można porównywać `(<, <=, ==, >, >=, !=)`, oraz wykonywać na nich podstawowe operacje arytmetyczne `(+, -, *, /, ^)`. Stringi także można porównywać oraz dodawać. Zmienne typu `boolean` i listy także można porównywać.
+Variables of type `int` can be compared using `(<, <=, ==, >, >=, !=)` and subjected to
+basic arithmetic operations `(+, -, *, /, ^)`. You can also compare and concatenate strings.
+Variables of type `boolean` and lists can also be compared.
 
-###### Parametry funkcji
+###### Function Parameters
 
-Parametry do funkcji mogą być przekazywanie przez wartość i zmienną.
+Function parameters can be passed either by value or by reference.
 
-###### Inne cechy języka
+###### Other Language Features
 
-Dostępna jest funkcja wieloargumentowa `print()`, która jako argumenty przyjmuje zmienne i literały dowolnego typu.
-Jest także funkcja `` .get(i)``, która zwraca i-ty element listy lub stringa, oraz funkcja `` .append(expr)``, która dodaje na koniec listy dany element, a także funkcja ``.put(i, expr)`` działająca dla stringa i listy zmieniająca element pod indexem ``i`` na ``expr``.
+There is a built-in function `print()`, which takes variables and literals of any type as arguments.
+There is also a `.get(i)` function, which returns the i-th element of a list or string, and an `.append(expr)`
+function that adds a given element to the end of a list. Additionally, there is a `.put(i, expr)`
+function for strings and lists that changes the element at index `i` to `expr`.
 
-Wszelkie błędy wynikające z operowania na niepoprawnych typach są sprawdzane statycznie, przed rozpoczęciem wykonywania programu.
-
-
+All errors resulting from operations on incorrect types are checked statically before the program is executed.
 
 #### Interpreter
 
-W folderze `Interpreter` znajdują się pliki odpowiedzialne za implementację interpretera. W pliku `TypesAndUtils.hs` znajdują się zadeklarowane typy użyte w implementacji oraz proste funkcje pomocnicze.
+In the "Interpreter" folder, you will find files responsible for implementing the interpreter.
+The "TypesAndUtils.hs" file contains declared types used in the implementation and simple helper functions.
 
-Rozwiązanie opiera się na monadzie złożonej typu `type ExecM a = ExceptT String (StateT Store (ReaderT Env IO)) a`, gdzie `Env` to środowisko, a `Store` stan. Umożliwia ona rzucanie błędów wykonania, przechowywanie stałej wartości środowiska i zmiennej wartości stanu, a także wypisywanie informacji na wyjście.
+The solution is based on a monad with the composed type
+`type ExecM a = ExceptT String (StateT Store (ReaderT Env IO)) a`, where `Env` is the environment,
+and `Store` is the state. This monad allows for throwing runtime errors, storing the constant environment value
+and variable state value, and printing information to the output.
 
-###### Obsługa środowiska i stanu
+###### Handling Environment and State
 
-Środowisko jest zadane obiektem typu `data Env = Env { envVar :: EnvVar, envFun :: EnvFun, envFlags :: Flags }`, gdzie
+The environment is defined by the object of type `data Env = Env { envVar :: EnvVar, envFun :: EnvFun, envFlags :: Flags }`, where
 
 ```
 data Flags = Flags { loop_break :: Bool, loop_cont :: Bool }
@@ -48,35 +58,33 @@ type Loc = Integer
 data Fun = Fun { funArgs :: [Arg], funEnv :: Env, funBlock :: Block }
 ```
 
-Środowisko przechowuje informacje o zadeklarowanych zmiennych i ich lokacjach, a także o zadeklarowanych funkcjach. Dodatkowo przechowuje flagi używane w trakcie interpretacji programu w celu obsługi operacji przerywania pętli.
+The environment stores information about declared variables and their locations,
+as well as declared functions. It also stores flags used during program interpretation to handle loop interruption operations.
 
-Stan zadany jest obiektem typu `type Store = Map Loc Value`, gdzie
+The state is defined by the object of type `type Store = Map Loc Value`, where
 
 `data Value = VInt Integer | VBool Bool | VString String | VList [Value] | VNone`
 
-Stan przechowuje informacje o wartościach przypisanych do danych lokacji.
-W przypadku braku przypisania wartości zmiennej przy deklaracji, każdy typ ma przypisaną domyślną wartość.
+The state stores information about the values assigned to specific locations. 
+If no value is assigned to a variable at declaration, each type has a default value assigned.
 
-###### Główne funkcje odpowiadające za prawidłowe wykonanie programu
+###### Main Functions Responsible for Proper Program Execution
 
-- `execProgram :: Program -> IO ()` - Funkcja uruchamiające cały program (wywołuje `execStmts`). Jeżeli zakończy się błędem wykonania, wypisuje treść błędu na standardowe wyjście diagnostyczne.
-- `execStmts :: [Stmt] -> ExecM (Env, Value)` - Funkcja wykonująca listę instrukcji. Zajmuje się wychwyceniem `break`, `continue` i `return` - po otrzymaniu jednej z tych instrukcji nie wykonuje kolejnych.
-- `execBlock :: Block -> ExecM (Env, Value)`- Funkcja wykonująca blok instrukcji - w zasadzie po prostu wykonuje `execStmts` i zwraca zmienione środowisko.
-- `execStmt :: Stmt -> ExecM (Env, Value)` - Funkcja korzysta z monady `ExecM` i wykonuje daną instrukcję. Wartością zwracaną jest para `(Env, Value)`, ponieważ niektóre instrukcje modyfikują środowisko (na przykład deklaracja zmiennej lub funkcji). 
-  `Value` używane do obsługi zwracania wartości z funkcji. Instrukcje złożone (na przykład `while`), w których pojawi się return oraz sam return zwracają określoną wartość (wynik funkcji). Pozostałe instrukcje zwracają `VNone`.
-- `evalExpr :: Expr -> ExecM Value` - Funkcja odpowiedzialna za wyliczania wyrażeń. Ponieważ wyrażenie kończy się wynikiem, jej wartością zwracaną jest `Value`. 
-
-
+- `execProgram :: Program -> IO ()` - This function starts the entire program (calls `execStmts`). If it finishes with a runtime error, it prints the error message to the standard error output.
+- `execStmts :: [Stmt] -> ExecM (Env, Value)` - This function executes a list of statements. It handles `break`, `continue`, and `return` statements - after encountering one of these, it does not execute subsequent statements.
+- `execBlock :: Block -> ExecM (Env, Value)`-  This function executes a block of statements, essentially just executing `execStmts` and returning the modified environment.
+- `execStmt :: Stmt -> ExecM (Env, Value)` - This function uses the `ExecM` monad to execute a given statement. It returns a pair of `(Env, Value)` because some statements modify the environment (e.g., variable or function declarations). For compound statements (e.g., `while`) in which a return statement appears, or the return statement itself, it returns a specific value (the result of a function). Other statements return `VNone`.
+- `evalExpr :: Expr -> ExecM Value` - This function is responsible for evaluating expressions. Since an expression results in a value, it returns a `Value`.
 
 #### TypeChecker
 
-W folderze `TypeChecker` znajdują się pliki odpowiedzialne za implementację statycznego sprawdzania typów oraz wykrywania błędów (na przykład użycie niezadeklarowanej zmiennej). W pliku `TypesAndUtils.hs` znajdują się zadeklarowane typy użyte w implementacji oraz proste funkcje pomocnicze.
+In the "TypeChecker" folder, you will find files responsible for implementing static type checking and error detection (e.g., using undeclared variables). The "TypesAndUtils.hs" file contains declared types used in the implementation and simple helper functions.
 
-Rozwiązanie opiera się na monadzie złożonej typu `type TypeCheckM a = ExceptT String (Reader Env) a`. W tym przypadku wystarczy obsługa błędów i niezmiennego środowiska.
+The solution is based on a monad with the composed type `type TypeCheckM a = ExceptT String (Reader Env) a`. In this case, all we need is error handling and an immutable environment.
 
-###### Obsługa środowiska
+###### Environment Handling
 
-Środowisko jest zadane obiektem typu `data Env = Env { envVar :: EnvVar, envFun :: EnvFun, envFlags :: Flags }`, gdzie
+The environment is defined by the object of type `data Env = Env { envVar :: EnvVar, envFun :: EnvFun, envFlags :: Flags }`, where
 
 ```
 type EnvVar = Map Ident ValType
@@ -87,30 +95,30 @@ data Fun = Fun { funArgs :: [Arg], retType :: ValType, funEnv :: Env }
 data ValType = TInt | TString | TBool | TList ValType | TNone
 ```
 
-Są w nim przechowywane flagi:
+It stores flags:
 
-- `inFunc`, do obsługi błędu w postaci instrukcji `return` poza funkcją
-- `funcType`, do obsługi błędu w postaci nieprawidłowego typu wartości zwróconej z funkcji.
-- `ret`, do obsługi błędu w postaci braku jakiejkolwiek instrukcji `return` w ciele funkcji.
-- `inLoop`, do obsługi błędu w postaci instrukcji `break` lub `continue` poza pętlą.
+- `inFunc`, to handle the error of `return` statements outside of functions.
+- `funcType`, to handle the error of an invalid return type of a function.
+- `ret`, to handle the error of a missing `return` statement in a function body
+- `inLoop`, to handle `break` or `continue` statements outside of loops.
 
-A także typy zadeklarowanych zmiennych oraz funkcje.
+It also stores the types of declared variables and functions.
 
-###### Główne funkcje odpowiadające za prawidłowe wykonanie programu
+###### Main Functions Responsible for Proper Program Execution
 
-- `checkProgram :: Program -> Either String Env` - Funkcja sprawdzająca cały program (wywołuje `checkStmts`). Jej wynikiem jest komunikat błędu lub środowisko (jego wartość nie jest później używana).
-- `checkStmts :: [Stmt] -> TypeCheckM Env` - Funkcja sprawdzająca listę instrukcji. Po kolei sprawdza wszystkie instrukcje.
-- `checkBlock :: Block -> TypeCheckM Env` - Funkcja sprawdzająca blok instrukcji. Po prostu korzysta z `checkStmts`.
-- `checkStmt :: Stmt -> TypeCheckM Env` - Funkcja sprawdzające pojedynczą instrukcję. Podobnie jak w interpreterze, zwracam środowisko, ponieważ niektóre instrukcje mogą je zmienić. 
-- `checkExpr :: Expr -> TypeCheckM ValType` - Analogicznie jak w interpreterze. Funkcja sprawdza poprawność wyrażenia i zwraca jego typ.
+- `checkProgram :: Program -> Either String Env` -  This function checks the entire program (it calls `checkStmts`). Its result is either an error message or the environment (though its value is not used later).
+- `checkStmts :: [Stmt] -> TypeCheckM Env` - This function checks a list of statements. It sequentially checks all statements.
+- `checkBlock :: Block -> TypeCheckM Env` - This function checks a block of statements. It simply uses `checkStmts`.
+- `checkStmt :: Stmt -> TypeCheckM Env` - This function checks a single statement. Similar to the interpreter, it returns the environment because some statements can modify it.
+- `checkExpr :: Expr -> TypeCheckM ValType` - Similar to the interpreter, this function checks the correctness of an expression and returns its type.
 
 
 
-#### Uruchomienie programu
+#### Running the Program
 
-Program buduje się poleceniem make.
+To build the program, use the `make` command.
 
-Kolejno uruchamia się go poleceniem `./interpreter` lub `./interpreter [nazwa pliku]`.
+You can run it with the command `./interpreter` or `./interpreter [filename]`.
 
-Dodatkowo w folderze głównym są skrypty `run_good.sh` oraz `run_bad.sh` uruchamiające wszystkie pliki z folderu `good` lub `bad`.
+Additionally, in the main folder, there are scripts `run_good.sh` and `run_bad.sh` that run all files in the "good" or "bad" folder.
 
